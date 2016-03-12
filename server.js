@@ -1,14 +1,34 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var usersConnected = 0;
+var currentTours = {};
 
 io.on('connection', function(socket) {
   log('User connected');
-  io.emit('userConnected', '');
+  io.emit('updateStudentsConnected', ++usersConnected);
+
   socket.on('disconnect', function() {
-    io.emit('userDisconnected', '');
+    io.emit('updateStudentsConnected',--usersConnected);
     log('User disconnected');
   });
+
+  socket.on('getAssets', function(msg){
+    log('User requested current assent, sent back: ');
+    io.emit('currentAsset', currentTours[msg]);
+  });
+
+  socket.on('setAsset', function(msg){
+    log('Guide set asset to ' + msg);
+    current
+    io.emit('currentAsset')
+  })
+
+  socket.on('startTour', function(msg){
+    log('Tour with pin ' + msg + ' has started');
+    currentTours[msg] = 0;
+  });
+
 });
 
 http.listen(process.env.PORT || 8080, function(){
