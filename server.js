@@ -5,40 +5,40 @@ var usersConnected = 0;
 var currentTours = {};
 
 io.on('connection', function(socket) {
-  log('User connected');
+  l('User connected');
   io.emit('updateStudentsConnected', ++usersConnected);
 
   socket.on('disconnect', function() {
     io.emit('updateStudentsConnected',--usersConnected);
-    log('User disconnected');
+    l('User disconnected');
   });
 
   socket.on('getAssets', function(msg){
-    log('User requested current assent, sent back: ');
+    l('User requested current assent, sent back: ');
     io.emit('currentAsset', currentTours[msg]);
   });
 
   socket.on('setAsset', function(msg){
-    log('Guide set asset to ' + msg);
-    current
+    l('Guide set asset to ' + msg);
+    // currentTou
     io.emit('currentAsset')
   })
 
   socket.on('startTour', function(msg){
-    log('Tour with pin ' + msg + ' has started');
+    l('Tour with pin ' + msg + ' has started');
     currentTours[msg] = 0;
   });
 
 });
 
 http.listen(process.env.PORT || 8080, function(){
-  log('Listening on port 8080');
+  l('Listening on port 8080');
 })
 
 app.get('/', function(req, res){
   res.send('You should not be here!');
 })
 
-function log(message) {
+function l(message) {
   console.log('[INFO]' + message);
 }
