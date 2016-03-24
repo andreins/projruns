@@ -30,7 +30,12 @@ io.on('connection', function(socket) {
     broadcast(key, 'ra', answer);
   });
 
-  socket.on('publishQuestion', function(key, id) { 
+  socket.on('endTour', function(key) {
+    io.emit(key, 'et');
+    l('Ending tour with pin: ' + key);
+  });
+
+  socket.on('publishQuestion', function(key, id) {
     broadcast(key, 'pq', id);
   });
 
